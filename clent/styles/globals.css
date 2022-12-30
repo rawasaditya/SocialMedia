@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins&display=swap');
+body{
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #342E49;
+    background-color: #F7F7F8;
+}
+
+.brand{
+    font-family: 'Dancing Script', cursive;
+}
+
+.active{
+    @apply font-semibold bg-indigo-200 text-gray-800 rounded-md
+}
+
+.navLink{
+    @apply font-light text-xl px-2 py-1 flex align-middle items-center justify-start gap-4 hover:text-gray-500 cursor-pointer
+}
+
+.navWrapper{
+    @apply flex flex-col gap-3 mr-2
+}
