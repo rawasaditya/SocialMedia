@@ -11,7 +11,7 @@ const AuthCard = () => {
                 <button className={`btn btn-sm ${!showLogin ? "btn-primary" : 'btn-ghost'}`} onClick={() => setshowLogin(prev => !prev)}>Register</button>
             </div>
             {
-                showLogin ? <Login /> : <Register />
+                showLogin ? <Login setshowLogin={setshowLogin} /> : <Register setshowLogin={setshowLogin} />
             }
         </div>
     )
