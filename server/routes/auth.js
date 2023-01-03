@@ -1,5 +1,5 @@
 const express = require('express');
-const { register, login, protected, logout, uploadpost, getUserPosts } = require('../controllers/auth');
+const { register, login, protected, logout, uploadpost, getUserPosts, likeunlike } = require('../controllers/auth');
 const router = express.Router();
 const multer = require('multer');
 const jwt = require('jsonwebtoken');
@@ -26,5 +26,6 @@ router.post('/login', login);
 router.get('/protected', protected);
 router.get('/logout', logout);
 router.post('/uploadpost', upload.single('image'), uploadpost);
-router.get("/user-posts", getUserPosts)
+router.get("/user-posts", getUserPosts);
+router.post('/likeunlike', likeunlike);
 module.exports = router;

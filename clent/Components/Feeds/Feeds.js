@@ -7,11 +7,11 @@ const Feeds = () => {
     useEffect(() => {
         API.get('user-posts')
             .then(res => {
-                setPosts(res.data)
+                setPosts(res?.data)
             })
     }, []);
     return (
-        <div className='p-4'>
+        <div className='p-2 md:p-4'>
             <h3>Your posts</h3>
             <FeedList posts={posts?.response} />
 

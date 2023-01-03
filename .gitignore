@@ -1,3 +1,5 @@
 **/node_modules
 clent/.next
 server/static
+clent/.env.local
+server/.env

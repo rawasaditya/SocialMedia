@@ -12,10 +12,10 @@ const register = async (req, res) => {
         username,
         password,
         email,
-        fistName,
+        firstName,
         lastName
     } = req.body;
-    if ([username, password, email, fistName, lastName].includes(undefined)) {
+    if ([username, password, email, firstName, lastName].includes(undefined)) {
         const statusRes = new StatusRes(`Please fill all the fields: User Name, Password, Email, First Name, Last Name`)
         return res.status(400).json(statusRes)
     }
@@ -38,7 +38,7 @@ const register = async (req, res) => {
         username,
         password: hashPass,
         email,
-        fistName,
+        firstName,
         lastName
     })
     try {
@@ -175,6 +175,9 @@ const getUserPosts = async (req, res) => {
     }
 }
 
+const likeunlike = async (req, res) => {
+    res.status(200).json({ "test": "TEst" });
+}
 module.exports = {
     register,
     login,
@@ -182,5 +185,6 @@ module.exports = {
     protected,
     logout,
     uploadpost,
-    getUserPosts
+    getUserPosts,
+    likeunlike
 }

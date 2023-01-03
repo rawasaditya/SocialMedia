@@ -29,7 +29,7 @@ const PostForm = ({
     return (
         <div className="card lg:card-side bg-base-100 shadow-xl overflow-hidden">
             <label>
-                <figure className='w-96 max-h-[400px]'>
+                <figure className='md:w-96 max-h-[400px]'>
                     <img src={previewImage} alt="Album" accept="image/*" />
                     <input type="file" ref={filePicekerRef} className='hidden' onChange={previewFile} />
                 </figure>

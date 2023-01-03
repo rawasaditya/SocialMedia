@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import API from '../../../api';
 const Register = ({ setshowLogin }) => {
     const [username, setusername] = useState("");
-    const [fistName, setfistName] = useState("");
+    const [firstName, setfirstName] = useState("");
     const [lastName, setlastName] = useState("");
     const [email, setemail] = useState("");
     const [password, setpassword] = useState("");
@@ -14,7 +14,7 @@ const Register = ({ setshowLogin }) => {
 
     const resetForm = () => {
         setusername("");
-        setfistName("");
+        setfirstName("");
         setlastName("");
         setemail("");
         setpassword("");
@@ -75,7 +75,7 @@ const Register = ({ setshowLogin }) => {
             username,
             password,
             email,
-            fistName,
+            firstName,
             lastName
         }).then((res) => {
             if (res.statusText === 'OK') {
@@ -114,7 +114,7 @@ const Register = ({ setshowLogin }) => {
 
             <div className="card-body">
                 <div className="form-control w-full max-w-xs">
-                    <input autoComplete='off' type="text" required value={fistName} onChange={e => setfistName(e.target.value)} placeholder="First Name" className="input input-md input-bordered w-full max-w-xs" />
+                    <input autoComplete='off' type="text" required value={firstName} onChange={e => setfirstName(e.target.value)} placeholder="First Name" className="input input-md input-bordered w-full max-w-xs" />
                 </div>
                 <div className="form-control w-full max-w-xs">
                     <input autoComplete='off' type="text" required value={lastName} onChange={e => setlastName(e.target.value)} placeholder="Last Name" className="input input-md input-bordered w-full max-w-xs" />

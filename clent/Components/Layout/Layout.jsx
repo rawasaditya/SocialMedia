@@ -11,9 +11,9 @@ const Layout = ({ children }) => {
           Loading...
         </div> : <div >
           <div className='h-screen'>
-            <div className='flex gap-2  p-7 h-full'>
-              {context?.user?._id ? <NavBar /> : <></>}
-              <main className='flex-1 px-5 '>
+            <div className='flex gap-2 p-3 md:p-7 h-full'>
+              <div className='hidden md:block'>{context?.user?._id ? <NavBar /> : <></>}</div>
+              <main className='flex-1 px-2 md:px-5 '>
                 {children}
               </main>
             </div>
