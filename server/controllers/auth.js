@@ -3,6 +3,10 @@ const User = require('../models/user');
 const { comparePassword, hasPassword } = require('./helpers/auth');
 const jwt = require("jsonwebtoken");
 const Posts = require("../models/posts");
+
+
+const jwtVerify = (token) => jwt.verify(token, process.env.JWT_SECRET);
+
 const register = async (req, res) => {
     const {
         username,
@@ -63,7 +67,7 @@ const login = async (req, res) => {
         }
         const token = jwt.sign({
             _id: user._id,
-        }, process.env.JWT_SECRET, { expiresIn: "1d" })
+        }, process.env.JWT_SECRET, { expiresIn: "30d" })
         user.password = undefined;
         const statusRes = new StatusRes("Logged in !!!", { user });
 
@@ -86,16 +90,17 @@ const isAuth = async (req, res, next) => {
     const token = req.cookies.token
     try {
         if (token) {
-            const decode = jwt.verify(token, process.env.JWT_SECRET);
+            const decode = jwtVerify(token);
             req.user = await User.findById(decode._id).select('-password');
             next();
+            return;
         }
         const resp = new StatusRes("Not Authorized")
-        res.clearCookie("token");
+        // res.clearCookie("token");
         return res.status(401).json(resp);
     } catch (error) {
         const resp = new StatusRes("Not Authorized")
-        res.clearCookie("token");
+        // res.clearCookie("token");
         return res.status(401).json(resp);
     }
 }
@@ -104,7 +109,7 @@ const protected = async (req, res) => {
     const token = req.cookies.token
     try {
         if (token) {
-            const decode = jwt.verify(token, process.env.JWT_SECRET);
+            const decode = jwtVerify(token);
             req.user = await User.findById(decode._id).select('-password');
             if (req.user) {
                 const resp = new StatusRes("User Authenticated", req.user);
@@ -125,17 +130,18 @@ const protected = async (req, res) => {
 }
 
 const logout = (req, res) => {
-    res.clearCookie("token");
-    res.end();
+    res.clearCookie("token").status(401).json({ "TEST": "TEST" })
+    res.
+        res.end()
 }
 
 const uploadpost = async (req, res) => {
-    const image = req?.file?.filename;
     const title = req.body.title;
     const caption = req.body.caption;
+    const image = req.file.filename
     try {
         const token = req.cookies.token
-        const decode = jwt.verify(token, process.env.JWT_SECRET);
+        const decode = jwtVerify(token);
         const postedBy = decode._id;
         const post = new Posts({
             image,
@@ -153,11 +159,28 @@ const uploadpost = async (req, res) => {
     }
 }
 
+const getUserPosts = async (req, res) => {
+    const token = req.cookies.token
+    const decode = jwtVerify(token);
+    try {
+        const posts = await Posts.find({ postedBy: decode?._id })
+            .populate('postedBy', '_id username firstName lastName')
+            .sort({ createdAt: -1 })
+            .limit(10)
+        const resp = new StatusRes("Posts retrieved", posts)
+        return res.status(200).json(resp)
+    } catch (err) {
+        const resp = new StatusRes("Something went wrong..!");
+        res.status(500).json(resp)
+    }
+}
+
 module.exports = {
     register,
     login,
     isAuth,
     protected,
     logout,
-    uploadpost
+    uploadpost,
+    getUserPosts
 }

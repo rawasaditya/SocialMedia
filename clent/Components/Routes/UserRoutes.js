@@ -17,6 +17,17 @@ const UserRoutes = ({ children }) => {
                 }
             }).
             catch(err => {
+
+                toast.error(err?.response?.data?.message || err.message, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: false,
+                    progress: undefined,
+                });
+                window.localStorage.removeItem("user")
                 setContext(prev => ({ ...prev, user: null, loading: false }));
             })
     }

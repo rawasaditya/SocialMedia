@@ -8,8 +8,13 @@ body{
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
-    color: #342E49;
-    background-color: #F7F7F8;
+    color: #A6AdBA;
+    background-color: #242933;
+    overflow: hidden;
+}
+
+.bgCust{
+    background-color: #2a303c;
 }
 
 .brand{
@@ -27,3 +32,15 @@ body{
 .navWrapper{
     @apply flex flex-col gap-3 mr-2
 }
+
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.feeds__suggestions::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .feeds__suggestions {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }

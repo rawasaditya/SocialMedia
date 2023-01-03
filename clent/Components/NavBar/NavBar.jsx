@@ -40,8 +40,8 @@ const NavBar = () => {
           toast.success("Post saved successfully");
           resetForm();
           setLoading('');
-          router.push("/");
-          location.reload();
+          // router.push("/");
+          // location.reload();
         } else {
           throw res;
         }
