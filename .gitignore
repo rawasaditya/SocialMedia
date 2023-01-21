@@ -3,3 +3,4 @@ clent/.next
 server/static
 clent/.env.local
 server/.env
+server/.env

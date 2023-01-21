@@ -13,7 +13,7 @@ mongoose.set("strictQuery", false);
 mongoose.connect(process.env.MONGOURL)
     .then(() => console.log("DB CONNECTED"))
     .catch(err => {
-        console.err(err)
+        console.error(err)
     });
 app.use(cookieParser());
 

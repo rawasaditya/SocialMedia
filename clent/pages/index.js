@@ -4,10 +4,8 @@ import UserRoutes from '../Components/Routes/UserRoutes'
 const Home = () => {
     return (
         <UserRoutes>
-            <div className='flex w-full h-screen overflow-y-auto feeds__suggestions'>
-                <div className='w-full'><Feeds /></div>
-                <div className='w-1/2 md:block hidden'>Suggestions</div>
-            </div>
+            <div className='w-full'><Feeds /></div>
+            <div className='hidden w-1/2 md:block'>Suggestions</div>
         </UserRoutes>
     )
 }

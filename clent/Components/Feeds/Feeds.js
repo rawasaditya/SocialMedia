@@ -11,9 +11,9 @@ const Feeds = () => {
             })
     }, []);
     return (
-        <div className='p-2 md:p-4'>
+        <div>
             <h3>Your posts</h3>
-            <FeedList posts={posts?.response} />
+            <FeedList posts={posts?.response} setPosts={setPosts} />
 
         </div>
     )

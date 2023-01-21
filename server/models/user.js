@@ -30,7 +30,7 @@ const userSchema = new Schema({
         trim: true,
     },
     about: {
-
+        type: String,
     },
     photo: String,
     following: [{

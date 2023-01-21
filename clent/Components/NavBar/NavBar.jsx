@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { FiHome, FiSearch, FiCompass, FiLogIn, FiPlusSquare, FiLogOut } from 'react-icons/fi'
+import { FiHome, FiSearch, FiCompass, FiLogIn, FiPlusSquare, FiLogOut, FiUser } from 'react-icons/fi'
 import Link from 'next/link'
 import { useRouter } from "next/router";
 import { AppContext } from '../../context'
@@ -69,8 +69,8 @@ const NavBar = () => {
 
       <input type="checkbox" id="post-modal" className="modal-toggle" />
       <div className="modal ">
-        <div className="modal-box w-1/2 max-w-5xl bg-slate-600">
-          <div className=" py-3 text-center">
+        <div className="w-1/2 max-w-5xl modal-box bg-slate-600">
+          <div className="py-3 text-center ">
             <h3 className='font-semibold text-gray-200 underline underline-offset-4'> CREATE NEW POST </h3>
           </div>
           <PostForm
@@ -85,13 +85,13 @@ const NavBar = () => {
           />
           <div className="modal-action">
             <button className={`btn btn-info btn-sm ${loading}`} onClick={postPicture}>POST</button>
-            <label htmlFor="post-modal" className="btn btn-sm btn-link text-gray-100 no-underline">Close</label>
+            <label htmlFor="post-modal" className="text-gray-100 no-underline btn btn-sm btn-link">Close</label>
           </div>
         </div>
       </div>
-      <nav className='h-full w-80 border-r flex flex-col'>
+      <nav className='flex flex-col h-full border-r w-80'>
         <ul className='mb-14'>
-          <li className='font-bold brand text-2xl'>Aditya Connect</li>
+          <li className='text-2xl font-bold brand'>Aditya Connect</li>
         </ul>
         <ul className='navWrapper'>
 
@@ -111,13 +111,22 @@ const NavBar = () => {
             <label htmlFor="post-modal" className='navLink'><FiPlusSquare /> <span>Create Post</span></label>
           </li>
         </ul>
-        <ul className='navWrapper h-full justify-end'>
-          {context?.user?._id ? <li className='navLink  border-t' onClick={logout}>
-            <FiLogOut /> <span>Logout</span>
-          </li> :
+        <ul className='justify-end h-full navWrapper'>
+          {context?.user?._id ?
+            <>
+
+              <li className='border-t navLink' onClick={logout}>
+                <FiLogOut /> <span>Logout</span>
+              </li>
+              <Link href="/profile" className={`${router.route == '/profile' ? "active" : null}`}>
+                <li className=' navLink'>
+                  <FiUser /> <span>Profile</span>
+                </li>
+              </Link>
+            </> :
 
             <Link href="/login" className={`${router.route == '/login' ? "active" : null}`}>
-              <li className='navLink  border-t'>
+              <li className='border-t navLink'>
                 <FiLogIn /> <span>Login</span>
               </li>
             </Link>

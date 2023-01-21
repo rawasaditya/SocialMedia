@@ -3,7 +3,8 @@ const User = require('../models/user');
 const { comparePassword, hasPassword } = require('./helpers/auth');
 const jwt = require("jsonwebtoken");
 const Posts = require("../models/posts");
-
+const path = require('path');
+var fs = require('fs');
 
 const jwtVerify = (token) => jwt.verify(token, process.env.JWT_SECRET);
 
@@ -131,8 +132,7 @@ const protected = async (req, res) => {
 
 const logout = (req, res) => {
     res.clearCookie("token").status(401).json({ "TEST": "TEST" })
-    res.
-        res.end()
+    res.end()
 }
 
 const uploadpost = async (req, res) => {
@@ -176,8 +176,68 @@ const getUserPosts = async (req, res) => {
 }
 
 const likeunlike = async (req, res) => {
-    res.status(200).json({ "test": "TEst" });
+    const { likeUnlike, post } = req.body;
+    const token = req.cookies.token;
+    let decode;
+    try {
+        decode = jwtVerify(token);
+    } catch (e) {
+        const resp = new StatusRes("User not found");
+        return res.status(401).json(resp);
+    }
+
+    try {
+        const getpost = await Posts.findById(post)
+        if (likeUnlike) {
+            getpost.likes.push(decode._id)
+        } else {
+            const index = getpost.likes.indexOf(decode._id);
+            if (index > -1) {
+                getpost.likes.splice(index, 1);
+            }
+        }
+        const updatedPost = await getpost.save();
+        const resp = new StatusRes("Liked", updatedPost);
+        return res.status(200).json(resp);
+    } catch (err) {
+        const resp = new StatusRes(err.message);
+        return res.status(400).json(resp);
+    }
 }
+
+const deletePost = async (req, res) => {
+    const { id } = req.body;
+    try {
+        const post = await Posts.findByIdAndDelete(id);
+        const filePath = path.join(__dirname, '..', 'static', 'posts', post.image)
+        fs.unlinkSync(filePath);
+        const resp = new StatusRes("Removed", post)
+        return res.status(200).json(resp)
+    } catch (err) {
+        const resp = new StatusRes(err.message)
+        return res.status(400).json(resp)
+    }
+}
+
+const updateUser = async (req, res) => {
+    try {
+        let updatedUser = await User.findByIdAndUpdate(req.user._id, {
+            ...req.body,
+            photo: req?.file?.filename
+        }, { new: true })
+        console.log(updatedUser)
+        updatedUser = {
+            ...updatedUser._doc,
+            password: undefined
+        }
+        const resp = new StatusRes("Success", updatedUser)
+        return res.status(200).json(resp)
+    } catch (e) {
+        const resp = new StatusRes(e.message, null)
+        return res.status(500).json(resp)
+    }
+}
+
 module.exports = {
     register,
     login,
@@ -186,5 +246,7 @@ module.exports = {
     logout,
     uploadpost,
     getUserPosts,
-    likeunlike
+    likeunlike,
+    deletePost,
+    updateUser
 }

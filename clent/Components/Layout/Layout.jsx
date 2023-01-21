@@ -7,14 +7,18 @@ const Layout = ({ children }) => {
   return (
     <>
       {
-        context?.loading ? <div className='h-screen w-screen flex justify-center align-middle items-center flex-col gap-2'><div className="radial-progress text-orange-400 animate-spin" style={{ "--value": 60 }}></div>
+        context?.loading ? <div className='flex flex-col items-center justify-center w-screen h-screen gap-2 align-middle'><div className="text-orange-400 radial-progress animate-spin" style={{ "--value": 60 }}></div>
           Loading...
         </div> : <div >
           <div className='h-screen'>
-            <div className='flex gap-2 p-3 md:p-7 h-full'>
+            <div className='flex h-full gap-2 p-3 md:p-7'>
               <div className='hidden md:block'>{context?.user?._id ? <NavBar /> : <></>}</div>
-              <main className='flex-1 px-2 md:px-5 '>
-                {children}
+              <main className='flex-1 p-2 px-2 md:px-5 md:p-4'>
+                <div className='flex w-full h-screen overflow-y-auto feeds__suggestions'>
+                  {children}
+
+                </div>
+
               </main>
             </div>
           </div>
