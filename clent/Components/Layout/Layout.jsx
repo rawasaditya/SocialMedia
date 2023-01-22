@@ -14,7 +14,7 @@ const Layout = ({ children }) => {
             <div className='flex h-full gap-2 p-3 md:p-7'>
               <div className='hidden md:block'>{context?.user?._id ? <NavBar /> : <></>}</div>
               <main className='flex-1 p-2 px-2 md:px-5 md:p-4'>
-                <div className='flex w-full h-screen overflow-y-auto feeds__suggestions'>
+                <div className='flex w-full h-screen gap-2 overflow-y-auto feeds__suggestions'>
                   {children}
 
                 </div>

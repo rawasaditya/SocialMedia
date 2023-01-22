@@ -26,7 +26,6 @@ const FeedCard = ({ post, user, setPosts }) => {
                 setPosts(prev => {
                     const filtered = prev?.response?.map(i => {
                         if (i._id !== res.data.response._id) {
-                            console.log(i._id)
                             return i
                         }
                     });

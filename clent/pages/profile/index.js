@@ -2,6 +2,7 @@ import React from 'react'
 import Feeds from '../../Components/Feeds/Feeds'
 import ProfileCard from '../../Components/ProfileCard/ProfileCard'
 import UserRoutes from '../../Components/Routes/UserRoutes'
+import Suggestions from '../../Components/Suggestions/Suggestions'
 
 const profile = () => {
     return (
@@ -10,7 +11,9 @@ const profile = () => {
                 <ProfileCard />
                 <Feeds />
             </div>
-            <div className='hidden w-1/2 md:block'>Suggestions</div>
+            <div className='hidden w-1/2 md:block'>
+                <Suggestions />
+            </div>
         </UserRoutes>
     )
 }

@@ -7,7 +7,9 @@ const path = require('path');
 var fs = require('fs');
 
 const jwtVerify = (token) => jwt.verify(token, process.env.JWT_SECRET);
-
+function getRandomArbitrary(min, max) {
+    return Math.ceil(Math.random() * (max - min) + min);
+}
 const register = async (req, res) => {
     const {
         username,
@@ -225,7 +227,6 @@ const updateUser = async (req, res) => {
             ...req.body,
             photo: req?.file?.filename
         }, { new: true })
-        console.log(updatedUser)
         updatedUser = {
             ...updatedUser._doc,
             password: undefined
@@ -234,6 +235,46 @@ const updateUser = async (req, res) => {
         return res.status(200).json(resp)
     } catch (e) {
         const resp = new StatusRes(e.message, null)
+        return res.status(500).json(resp)
+    }
+}
+
+const findPeople = async (req, res) => {
+    try {
+
+        const user = await User.findById(req.user._id);
+        let following = user.following;
+        following.push(user._id);
+        const people = await User.find({
+            _id: {
+                $nin: following
+            }
+        }).select('-password').limit(10);
+
+        const resp = new StatusRes("success", people);
+        return res.status(200).json(resp)
+
+
+
+    } catch (e) {
+        const resp = new StatusRes(e.message, null);
+        return res.status(500).json(resp)
+    }
+}
+
+const followUnFollow = async (req, res) => {
+    try {
+        const { id } = req.body;
+        const user = await User.findById(req.user._id);
+        const toFollow = await User.findById(id);
+        await user.following.push(toFollow);
+        await toFollow.followers.push(user);
+        await user.save();
+        await toFollow.save();
+        const resp = new StatusRes("success", null);
+        return res.status(200).json(resp)
+    } catch (e) {
+        const resp = new StatusRes(e.message, null);
         return res.status(500).json(resp)
     }
 }
@@ -248,5 +289,7 @@ module.exports = {
     getUserPosts,
     likeunlike,
     deletePost,
-    updateUser
+    updateUser,
+    findPeople,
+    followUnFollow
 }

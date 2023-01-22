@@ -1,5 +1,5 @@
 const express = require('express');
-const { register, login, protected, logout, uploadpost, getUserPosts, likeunlike, deletePost, updateUser } = require('../controllers/auth');
+const { followUnFollow, findPeople, register, login, protected, logout, uploadpost, getUserPosts, likeunlike, deletePost, updateUser } = require('../controllers/auth');
 const router = express.Router();
 const multer = require('multer');
 const jwt = require('jsonwebtoken');
@@ -19,8 +19,6 @@ const storage = multer.diskStorage({
     }
 })
 
-
-
 const userStorage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, path.join(__dirname, '..', 'static', 'users'))
@@ -34,7 +32,6 @@ const userStorage = multer.diskStorage({
         cb(null, filename)
     }
 })
-
 
 const upload = multer({ storage: storage })
 const uploadUserProfile = multer({
@@ -50,5 +47,7 @@ router.post('/uploadpost', upload.single('image'), uploadpost);
 router.get("/user-posts", getUserPosts);
 router.post('/likeunlike', likeunlike);
 router.post('/deletePost', deletePost);
-router.post('/updateUser', uploadUserProfile.single('photo'), updateUser)
+router.post('/updateUser', uploadUserProfile.single('photo'), updateUser);
+router.get('/find-people', findPeople);
+router.post('/follow-unFollow', followUnFollow);
 module.exports = router;
