@@ -5,7 +5,7 @@ import Suggestions from '../Components/Suggestions/Suggestions'
 const Home = () => {
     return (
         <UserRoutes>
-            <div className='w-full'><Feeds /></div>
+            <div className='w-full'><Feeds show="feeds" /></div>
             <div className='hidden w-1/2 md:block'>
                 <Suggestions />
             </div>

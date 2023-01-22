@@ -16,27 +16,34 @@ const Suggestions = () => {
 
     }, [toFollow.length]);
 
-    const followUser = (id, e) => {
+    const followUser = (id, e, follow) => {
         e.stopPropagation();
         API.post('follow-unFollow', {
-            id: id
+            id: id,
+            follow: follow
         })
             .then(res => {
-                setContext(prev => {
-                    return {
-                        ...prev,
-                        user: {
-                            ...prev.user,
-                            following: [...prev.user.following, id]
+                if (follow) {
+                    setContext(prev => {
+                        return {
+                            ...prev,
+                            user: {
+                                ...prev.user,
+                                following: [...prev.user.following, id]
+                            }
                         }
-                    }
-                })
-                setToFollow(prev => {
-                    const newFollow = prev.filter(i => {
-                        return i._id !== id
-                    })
-                    return newFollow
-                })
+                    });
+
+                    setToFollow(prev => {
+                        const newFollow = prev.filter(i => {
+                            return i._id !== id
+                        })
+                        return newFollow
+                    });
+                } else {
+
+                }
+
             }).catch(e => {
                 toast.error(e.message);
             })
@@ -63,9 +70,9 @@ const Suggestions = () => {
                                             <span className='text-xs'>{i.username}</span>
                                         </div>
                                     </div>
-                                    <button className='text-xs btn btn-sm' onClick={(e) => followUser(i._id, e)}>
+                                    <button className='text-xs btn btn-sm' onClick={(e) => followUser(i._id, e, true)}>
                                         {
-                                            context.user.followers.includes(i._id) ? "Follow Back" : "Follow"
+                                            context?.user?.followers?.includes(i._id) ? "Follow Back" : "Follow"
                                         }
                                     </button>
                                 </span>

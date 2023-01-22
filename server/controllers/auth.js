@@ -166,7 +166,30 @@ const getUserPosts = async (req, res) => {
     const decode = jwtVerify(token);
     try {
         const posts = await Posts.find({ postedBy: decode?._id })
-            .populate('postedBy', '_id username firstName lastName')
+            .populate('postedBy', '_id username firstName lastName photo')
+            .sort({ createdAt: -1 })
+            .limit(10)
+        const resp = new StatusRes("Posts retrieved", posts)
+        return res.status(200).json(resp)
+    } catch (err) {
+        const resp = new StatusRes("Something went wrong..!");
+        res.status(500).json(resp)
+    }
+}
+
+
+const getFeedPosts = async (req, res) => {
+    const token = req.cookies.token
+    const decode = jwtVerify(token);
+    try {
+        const users = await User.findById(decode?._id);
+
+        const posts = await Posts.find({
+            postedBy: {
+                $in: users.following
+            }
+        })
+            .populate('postedBy', '_id username firstName lastName photo')
             .sort({ createdAt: -1 })
             .limit(10)
         const resp = new StatusRes("Posts retrieved", posts)
@@ -264,11 +287,24 @@ const findPeople = async (req, res) => {
 
 const followUnFollow = async (req, res) => {
     try {
-        const { id } = req.body;
+        const { id, follow } = req.body;
         const user = await User.findById(req.user._id);
         const toFollow = await User.findById(id);
-        await user.following.push(toFollow);
-        await toFollow.followers.push(user);
+        if (follow) {
+            await user.following.push(toFollow);
+            await toFollow.followers.push(user);
+        } else {
+            const toIndex = user.following.indexOf(toFollow);
+            const userindex = toFollow.following.indexOf(user);
+            if (toIndex > -1) {
+                user.following.splice(toFollow, 1)
+            }
+            if (userindex > -1) {
+                toFollow.following.splice(user, 1)
+            }
+
+        }
+
         await user.save();
         await toFollow.save();
         const resp = new StatusRes("success", null);
@@ -291,5 +327,6 @@ module.exports = {
     deletePost,
     updateUser,
     findPeople,
-    followUnFollow
+    followUnFollow,
+    getFeedPosts
 }

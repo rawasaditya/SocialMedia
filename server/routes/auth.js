@@ -1,5 +1,5 @@
 const express = require('express');
-const { followUnFollow, findPeople, register, login, protected, logout, uploadpost, getUserPosts, likeunlike, deletePost, updateUser } = require('../controllers/auth');
+const { followUnFollow, getFeedPosts, findPeople, register, login, protected, logout, uploadpost, getUserPosts, likeunlike, deletePost, updateUser } = require('../controllers/auth');
 const router = express.Router();
 const multer = require('multer');
 const jwt = require('jsonwebtoken');
@@ -45,6 +45,8 @@ router.get('/protected', protected);
 router.get('/logout', logout);
 router.post('/uploadpost', upload.single('image'), uploadpost);
 router.get("/user-posts", getUserPosts);
+router.get("/feeds-posts", getFeedPosts);
+
 router.post('/likeunlike', likeunlike);
 router.post('/deletePost', deletePost);
 router.post('/updateUser', uploadUserProfile.single('photo'), updateUser);

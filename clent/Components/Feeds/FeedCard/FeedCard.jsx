@@ -45,7 +45,7 @@ const FeedCard = ({ post, user, setPosts }) => {
                     <Link href={`profile/${post.postedBy._id}`}>
                         <div className="avatar">
                             <div className="w-10 border rounded-full">
-                                <img src="/sitelevel/avataaars.png" />
+                                <img src={post.postedBy.photo ? `${process.env.NEXT_PUBLIC_API}/users/${post.postedBy.photo}` : "/sitelevel/avataaars.png"} />
                             </div>
                         </div>
                     </Link>
@@ -61,7 +61,7 @@ const FeedCard = ({ post, user, setPosts }) => {
                         <Link href={`profile/${post.postedBy._id}`}>
                             <div className="avatar">
                                 <div className="w-10 border rounded-full">
-                                    <img src="/sitelevel/avataaars.png" />
+                                    <img src={post.postedBy.photo ? `${process.env.NEXT_PUBLIC_API}/users/${post.postedBy.photo}` : "/sitelevel/avataaars.png"} />
                                 </div>
                             </div>
                         </Link>
